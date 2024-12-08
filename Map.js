@@ -6,6 +6,7 @@ export class GameMap {
         this.currentLayout = [];
         this.collectibles = null;
         this.totalCollectibles = 0;
+        this.floorTiles = null;
     }
 
     // Preset map layouts
@@ -41,6 +42,7 @@ export class GameMap {
         // Create physics group for walls
         this.walls = this.scene.physics.add.staticGroup();
         this.collectibles = this.scene.physics.add.staticGroup();
+        this.floorTiles = this.scene.add.group(); //creates group for floor tiles
         this.totalCollectibles = 0;
         
         // Load the specified layout
@@ -48,14 +50,6 @@ export class GameMap {
         
         // Add collision between player and walls
         this.scene.physics.add.collider(this.scene.player, this.walls);
-
-        // this.scene.physics.add.overlap(
-        //     this.scene.player,
-        //     this.collectibles,
-        //     this.collectFire,
-        //     null,
-        //     this
-        // );
     }
 
     loadLayout(layout) {
@@ -76,7 +70,9 @@ export class GameMap {
                 
                 // Always place floor first
                 if (tile !== 1) {
-                    this.scene.add.image(posX, posY, 'floor');
+                    //this.scene.add.image(posX, posY, 'floor');
+                    const floorTile = this.scene.add.image(posX, posY, 'floor');
+                    this.floorTiles.add(floorTile);
                 }
                 
                 switch(tile) {
@@ -84,11 +80,17 @@ export class GameMap {
                         this.walls.create(posX, posY, 'wall')
                             .setImmovable(true);
                         break;
-                    case 2: // Collectible
-                        this.collectibles.create(posX, posY, 'fire')
-                            .setScale(0.5); // Make fire smaller
+                    case 2: // Collectible //const fire = ?
+                        const fire = this.collectibles.create(posX, posY, 'fire')
+                            .setScale(0.5);
+                        fire.setData('gridX', x); // Store grid position
+                        fire.setData('gridY', y);
                         this.totalCollectibles++;
                         break;
+                        // this.collectibles.create(posX, posY, 'fire')
+                        //     .setScale(0.5); // Make fire smaller
+                        // this.totalCollectibles++;
+                        // break;
                     case 3: // Exit
                         this.exitTile = this.scene.add.image(posX, posY, 'exit');
                         this.exitPos = { x: x, y: y };

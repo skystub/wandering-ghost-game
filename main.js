@@ -29,7 +29,7 @@ class GameScene extends Phaser.Scene{
         this.bgMusic;
         this.emitter;
         this.gameMap;
-        this.collectibles;
+        //this.collectibles;
     }
 
     preload(){
@@ -143,16 +143,22 @@ class GameScene extends Phaser.Scene{
         // }
     }
 
-    ccollectFire(player, fire) {
-        fire.destroy();
-        this.fires++;
-        this.textScore.setText(`Fires: ${this.fires}`);
-        this.coinMusic.play();
-        this.emitter.start();
-        
-        // Check win condition when 10 or more fires are collected
-        if (this.fires >= 10 && this.gameMap.isAtExit(this.player)) {
-            this.gameOver(true);
+    collectFire(player, fire) {
+        if (fire.active){
+            this.coinMusic.play();
+            this.emitter.start();
+            
+            // Update score
+            this.fires++;
+            this.textScore.setText(`Fires: ${this.fires}`);
+
+            // Destroy the fire sprite
+            fire.destroy();
+
+            // Check win condition
+            if (this.fires >= 10 && this.gameMap.isAtExit(this.player)) {
+                this.gameOver(true);
+            }
         }
     }
 
