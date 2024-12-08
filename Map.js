@@ -12,8 +12,8 @@ export class GameMap {
     // Preset map layouts
     static LAYOUTS = {
         LEVEL_1: [
-            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 3],
-            [1, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 1],
+            [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 3],
+            [1, 0, 0, 0, 0, 0, 1, 0, 2, 0, 0, 0, 0, 0, 0],
             [1, 0, 1, 1, 1, 0, 1, 0, 1, 1, 0, 1, 1, 0, 1],
             [1, 2, 0, 0, 1, 0, 2, 0, 1, 0, 0, 0, 1, 0, 1],
             [1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 0, 1, 0, 1],
@@ -98,42 +98,14 @@ export class GameMap {
                 }
             });
         });
-
-        // Create new walls based on layout
-        // layout.forEach((row, y) => {
-        //     row.forEach((tile, x) => {
-        //         if (tile === 1) { // Wall
-        //             this.walls.create(
-        //                 x * this.tileSize + this.tileSize / 2,
-        //                 y * this.tileSize + this.tileSize / 2,
-        //                 'wall'
-        //             ).setImmovable(true);
-        //         } else { // Floor
-        //             this.scene.add.image(
-        //                 x * this.tileSize + this.tileSize / 2,
-        //                 y * this.tileSize + this.tileSize / 2,
-        //                 'floor'
-        //             );
-        //         }
-        //     });
-        // });
     }
-
-    // collectFire(player, fire) {
-    //     fire.destroy();
-    //     this.totalCollectibles--;
-    //     this.scene.updateScore();
-        
-    //     // Check win condition
-    //     if (this.totalCollectibles === 0) {
-    //         this.scene.checkWinCondition = true; // Player can now win by reaching exit
-    //     }
-    // }
 
     isAtExit(player) {
-        const playerTileX = Math.floor(player.x / this.tileSize);
-        const playerTileY = Math.floor(player.y / this.tileSize);
-        return playerTileX === this.exitPos.x && playerTileY === this.exitPos.y;
+    // Get the player's current tile position
+    const playerTileX = Math.floor(player.x / this.tileSize);
+    const playerTileY = Math.floor(player.y / this.tileSize);
+    
+    // Simply check if the player's current tile matches the exit tile position
+    return playerTileX === this.exitPos.x && playerTileY === this.exitPos.y;
     }
-
 }

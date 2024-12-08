@@ -112,7 +112,6 @@ class GameScene extends Phaser.Scene{
     }
 
     update(){
-        // gameManager.tickGamePlay();
         this.remainingTime = this.timedEvent.getRemainingSeconds();
         this.textTime.setText(`Remaining Time: ${Math.round(this.remainingTime).toString()}`);
 
@@ -137,10 +136,14 @@ class GameScene extends Phaser.Scene{
         } else if (down.isDown) {
             this.player.setVelocityY(this.playerSpeed);
         }
+        //make variable for win condition number of fires
 
-        // if (this.fires >= 10 && this.gameMap.isAtExit(this.player)) {
-        //     this.gameOver(true); // Win condition
-        // }
+        if (this.gameMap.isAtExit(this.player)) {
+            if (this.fires >= 7) {  // You can adjust this number as needed
+                this.gameOver(true);  // Player wins
+            }
+            // If player doesn't have enough fires, nothing happens
+        }
     }
 
     collectFire(player, fire) {
@@ -156,7 +159,7 @@ class GameScene extends Phaser.Scene{
             fire.destroy();
 
             // Check win condition
-            if (this.fires >= 10 && this.gameMap.isAtExit(this.player)) {
+            if (this.fires >= 7 && this.gameMap.isAtExit(this.player)) {
                 this.gameOver(true);
             }
         }
