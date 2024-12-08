@@ -49,13 +49,13 @@ export class GameMap {
         // Add collision between player and walls
         this.scene.physics.add.collider(this.scene.player, this.walls);
 
-        this.scene.physics.add.overlap(
-            this.scene.player,
-            this.collectibles,
-            this.collectFire,
-            null,
-            this
-        );
+        // this.scene.physics.add.overlap(
+        //     this.scene.player,
+        //     this.collectibles,
+        //     this.collectFire,
+        //     null,
+        //     this
+        // );
     }
 
     loadLayout(layout) {
@@ -117,16 +117,16 @@ export class GameMap {
         // });
     }
 
-    collectFire(player, fire) {
-        fire.destroy();
-        this.totalCollectibles--;
-        this.scene.updateScore();
+    // collectFire(player, fire) {
+    //     fire.destroy();
+    //     this.totalCollectibles--;
+    //     this.scene.updateScore();
         
-        // Check win condition
-        if (this.totalCollectibles === 0) {
-            this.scene.checkWinCondition = true; // Player can now win by reaching exit
-        }
-    }
+    //     // Check win condition
+    //     if (this.totalCollectibles === 0) {
+    //         this.scene.checkWinCondition = true; // Player can now win by reaching exit
+    //     }
+    // }
 
     isAtExit(player) {
         const playerTileX = Math.floor(player.x / this.tileSize);

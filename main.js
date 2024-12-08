@@ -65,7 +65,17 @@ class GameScene extends Phaser.Scene{
         this.player.body.allowGravity = false;
 
         this.gameMap.create('LEVEL_1');
-       
+
+        this.physics.add.overlap(
+            this.player,
+            this.gameMap.collectibles,
+            this.collectFire,
+            null,
+            this
+        );
+
+
+       //set player pos
         const spawnX = this.gameMap.tileSize * 1.5;
         const spawnY = sizes.height - this.gameMap.tileSize * 1.5;
         this.player.setPosition(spawnX, spawnY);
@@ -74,11 +84,10 @@ class GameScene extends Phaser.Scene{
 
         this.cursor = this.input.keyboard.createCursorKeys();
 
-        this.target = this.physics.add.image(0,0,"apple").setOrigin(0,0);
-        this.target.setMaxVelocity(0,speedDown); //stop target from falling faster and faster over time
+        // this.target = this.physics.add.image(0,0,"apple").setOrigin(0,0);
+        // this.target.setMaxVelocity(0,speedDown); //stop target from falling faster and faster over time
 
-        this.physics.add.overlap(this.target,this.player,this.collectFire,null,this)
-
+        // this.physics.add.overlap(this.target,this.player,this.collectFire,null,this)
 
         this.textScore = this.add.text(sizes.width - 120, 10, "Fires:0",{
             font: "25px Arial",
@@ -129,17 +138,22 @@ class GameScene extends Phaser.Scene{
             this.player.setVelocityY(this.playerSpeed);
         }
 
-        if (this.fires >= 10 && this.gameMap.isAtExit(this.player)) {
-            this.gameOver(true); // Win condition
-        }
+        // if (this.fires >= 10 && this.gameMap.isAtExit(this.player)) {
+        //     this.gameOver(true); // Win condition
+        // }
     }
 
-    collectFire(player, fire) {
+    ccollectFire(player, fire) {
         fire.destroy();
-        this.coinMusic.play();
-        this.emitter.start();
         this.fires++;
         this.textScore.setText(`Fires: ${this.fires}`);
+        this.coinMusic.play();
+        this.emitter.start();
+        
+        // Check win condition when 10 or more fires are collected
+        if (this.fires >= 10 && this.gameMap.isAtExit(this.player)) {
+            this.gameOver(true);
+        }
     }
 
     // getRandomX(){ //uneeded
