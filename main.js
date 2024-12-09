@@ -103,40 +103,40 @@ class GameScene extends Phaser.Scene{
         })
         this.emitter.startFollow(this.player.sprite, this.player.sprite.width/2, this.player.sprite.height/2, true);
 
-        // // Create the dark overlay
-        // const darkness = this.add.graphics();
-        // darkness.fillStyle(0x000000, 0.95); // Black with 0.8 opacity
-        // darkness.fillRect(0, 0, sizes.width, sizes.height);
-        // darkness.setDepth(1); // Above the map but below UI
+        // Create the dark overlay
+        const darkness = this.add.graphics();
+        darkness.fillStyle(0x000000, 0.95); // Black with 0.8 opacity
+        darkness.fillRect(0, 0, sizes.width, sizes.height);
+        darkness.setDepth(1); // Above the map but below UI
 
-        // // Create a mask that follows the player
-        // const spotlight = this.make.graphics({
-        //     add: false  // Don't add to display list
-        // });
+        // Create a mask that follows the player
+        const spotlight = this.make.graphics({
+            add: false  // Don't add to display list
+        });
         
-        // // Function to update the spotlight position
-        // const updateSpotlight = () => {
-        //     spotlight.clear();
-        //     spotlight.fillStyle(0xffffff);
-        //     spotlight.fillCircle(
-        //         this.player.sprite.x, 
-        //         this.player.sprite.y, 
-        //         100  // Radius of visible area
-        //     );
-        // }
+        // Function to update the spotlight position
+        const updateSpotlight = () => {
+            spotlight.clear();
+            spotlight.fillStyle(0xffffff);
+            spotlight.fillCircle(
+                this.player.sprite.x, 
+                this.player.sprite.y, 
+                100  // Radius of visible area
+            );
+        }
 
-        // // Initial spotlight
-        // updateSpotlight();
+        // Initial spotlight
+        updateSpotlight();
 
-        // // Create mask and apply to darkness
-        // const mask = spotlight.createGeometryMask();
-        // mask.invertAlpha = true;
-        // darkness.setMask(mask);
+        // Create mask and apply to darkness
+        const mask = spotlight.createGeometryMask();
+        mask.invertAlpha = true;
+        darkness.setMask(mask);
 
-        // // Store references for update
-        // this.darkness = darkness;
-        // this.spotlight = spotlight;
-        // this.updateSpotlight = updateSpotlight;
+        // Store references for update
+        this.darkness = darkness;
+        this.spotlight = spotlight;
+        this.updateSpotlight = updateSpotlight;
     }
 
     update(){
