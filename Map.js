@@ -72,7 +72,7 @@ export class GameMap {
         this.loadLayout(GameMap.LAYOUTS[layoutKey]);
         
         // Add collision between player and walls
-        this.scene.physics.add.collider(this.scene.player, this.walls);
+        this.scene.physics.add.collider(this.scene.player.sprite, this.walls);
     }
 
     loadLayout(layout) {
@@ -125,8 +125,8 @@ export class GameMap {
 
     isAtExit(player) {
     // Get the player's current tile position
-    const playerTileX = Math.floor(player.x / this.tileSize);
-    const playerTileY = Math.floor(player.y / this.tileSize);
+    const playerTileX = Math.floor(player.sprite.x / this.tileSize);
+    const playerTileY = Math.floor(player.sprite.y / this.tileSize);
     
     // Simply check if the player's current tile matches the exit tile position
     return playerTileX === this.exitPos.x && playerTileY === this.exitPos.y;

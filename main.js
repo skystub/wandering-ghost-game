@@ -1,6 +1,7 @@
 import './style.css'
 import Phaser from 'phaser'
-import {GameMap} from './Map.js'
+import {GameMap} from './map.js'
+import { Player } from './player.js';
 
 const TILE_SIZE = 16;  // Your tile size
 const GRID_WIDTH = 69; // Desired width in tiles
@@ -49,9 +50,6 @@ class GameScene extends Phaser.Scene{
     }
 
     create(){
-        // gameManager = new GameManager(this);
-        // gameManager.initializeGame();
-
         this.coinMusic = this.sound.add("coin");
         this.bgMusic = this.sound.add("bgMusic");
         //this.bgMusic.play();
@@ -59,41 +57,26 @@ class GameScene extends Phaser.Scene{
 
         this.add.image(0,0,"bg").setOrigin(0,0).setDepth(-1);
 
-        this.player = this.physics.add
-            .image(0,sizes.height - 100,"basket")
-            .setOrigin(0.5,0.5)
-            .setDepth(2);
-        this.player.setScale(0.4);
-        this.player.setSize(16,16)
-            .setOffset(10,10);
-        this.player.setCollideWorldBounds(true);
-        this.player.setImmovable(false)
-        this.player.body.allowGravity = false;
+        this.player = new Player(this, 0, sizes.height - 100);
 
         this.gameMap.create('LEVEL_1');
 
         this.physics.add.overlap(
-            this.player,
+            this.player.sprite,
             this.gameMap.collectibles,
             this.collectFire,
             null,
             this
         );
 
-
        //set player pos
         const spawnX = this.gameMap.tileSize * 1.5;
         const spawnY = sizes.height - this.gameMap.tileSize * 1.5;
-        this.player.setPosition(spawnX, spawnY);
+        this.player.sprite.setPosition(spawnX, spawnY);
 
         this.scene.pause("scene-game")
 
         this.cursor = this.input.keyboard.createCursorKeys();
-
-        // this.target = this.physics.add.image(0,0,"apple").setOrigin(0,0);
-        // this.target.setMaxVelocity(0,speedDown); //stop target from falling faster and faster over time
-
-        // this.physics.add.overlap(this.target,this.player,this.collectFire,null,this)
 
         this.textScore = this.add.text(sizes.width - 120, 10, "Score:0",{
             font: "25px Arial",
@@ -105,7 +88,7 @@ class GameScene extends Phaser.Scene{
             fill: "#000000",
         });
 
-        this.timedEvent = this.time.delayedCall(30000, this.gameOver,[], this);
+        this.timedEvent = this.time.delayedCall(50000, this.gameOver,[], this);
 
         this.emitter=this.add.particles(0,0,"money",{
             speed: 100,
@@ -114,38 +97,17 @@ class GameScene extends Phaser.Scene{
             duration:100,
             emitting:false
         })
-        this.emitter.startFollow(this.player, this.player.width/2, this.player.height/2, true);
+        this.emitter.startFollow(this.player.sprite, this.player.sprite.width/2, this.player.sprite.height/2, true);
     }
 
     update(){
         this.remainingTime = this.timedEvent.getRemainingSeconds();
         this.textTime.setText(`Remaining Time: ${Math.round(this.remainingTime).toString()}`);
 
-        // if(this.target.y >= sizes.height){
-        //     this.target.setY(0); //stop apple from falling int o endless world, returns to top 
-        //     this.target.setX(this.getRandomX());
-        // }
-
-        const {left, right, up, down} = this.cursor;
-
-        this.player.setVelocityX(0);
-        this.player.setVelocityY(0);
-
-        if (left.isDown){
-            this.player.setVelocityX(-this.playerSpeed);
-        } else if (right.isDown){
-            this.player.setVelocityX(this.playerSpeed);
-        } 
-
-        if (up.isDown) {
-            this.player.setVelocityY(-this.playerSpeed);
-        } else if (down.isDown) {
-            this.player.setVelocityY(this.playerSpeed);
-        }
-        //make variable for win condition number of fires
+        this.player.update(this.cursor);
 
         if (this.gameMap.isAtExit(this.player)) {
-            if (this.fires >= 7) {  // You can adjust this number as needed
+            if (this.fires >= 40) {  // You can adjust this number as needed
                 this.gameOver(true);  // Player wins
             }
             // If player doesn't have enough fires, nothing happens
@@ -165,24 +127,11 @@ class GameScene extends Phaser.Scene{
             fire.destroy();
 
             // Check win condition
-            if (this.fires >= 7 && this.gameMap.isAtExit(this.player)) {
+            if (this.fires >= 40 && this.gameMap.isAtExit(this.player)) {
                 this.gameOver(true);
             }
         }
     }
-
-    // getRandomX(){ //uneeded
-    //     return Math.floor(Math.random()*400);
-    // }
-
-    // targetHit(){ //collisions, add to score
-    //     this.coinMusic.play();
-    //     this.emitter.start();
-    //     this.target.setY(0);
-    //     this.target.setX(this.getRandomX());
-    //     this.points++
-    //     this.textScore.setText(`Score: ${this.points}`);
-    // }
 
     gameOver(won = false){
         this.sys.game.destroy(true)
