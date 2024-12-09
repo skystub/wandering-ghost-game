@@ -1,9 +1,14 @@
 import './style.css'
 import Phaser from 'phaser'
 import {GameMap} from './Map.js'
-const sizes = { //holds values of width and height
-    width:15 * 32,
-    height:11 * 32,
+
+const TILE_SIZE = 16;  // Your tile size
+const GRID_WIDTH = 69; // Desired width in tiles
+const GRID_HEIGHT = 34; // Desired height in tiles
+
+const sizes = {
+    width: GRID_WIDTH * TILE_SIZE,  // 69 * 16 = 1104 pixels
+    height: GRID_HEIGHT * TILE_SIZE  // 34 * 16 = 544 pixels
 }
 
 const speedDown = 100;
@@ -52,14 +57,15 @@ class GameScene extends Phaser.Scene{
         //this.bgMusic.play();
         //this.bgMusic.stop();
 
-        this.add.image(0,0,"bg").setOrigin(0,0);
+        this.add.image(0,0,"bg").setOrigin(0,0).setDepth(-1);
 
         this.player = this.physics.add
             .image(0,sizes.height - 100,"basket")
-            .setOrigin(0.5,0.5);
-        this.player.setScale(0.25);
+            .setOrigin(0.5,0.5)
+            .setDepth(2);
+        this.player.setScale(0.4);
         this.player.setSize(16,16)
-            .setOffset(8,8);
+            .setOffset(10,10);
         this.player.setCollideWorldBounds(true);
         this.player.setImmovable(false)
         this.player.body.allowGravity = false;
@@ -89,7 +95,7 @@ class GameScene extends Phaser.Scene{
 
         // this.physics.add.overlap(this.target,this.player,this.collectFire,null,this)
 
-        this.textScore = this.add.text(sizes.width - 120, 10, "Fires:0",{
+        this.textScore = this.add.text(sizes.width - 120, 10, "Score:0",{
             font: "25px Arial",
             fill: "#000000",
         });
@@ -153,7 +159,7 @@ class GameScene extends Phaser.Scene{
             
             // Update score
             this.fires++;
-            this.textScore.setText(`Fires: ${this.fires}`);
+            this.textScore.setText(`Score: ${this.fires}`);
 
             // Destroy the fire sprite
             fire.destroy();
@@ -192,12 +198,14 @@ class GameScene extends Phaser.Scene{
         gameEndDiv.style.display="flex"
     }
 }
+
 const config = {
     type:Phaser.WEBGL,
     width:sizes.width,
     height:sizes.height,
     canvas:gameCanvas, //links the two canvases, gameCanvas in style.css
     /*adding physics*/
+    
     physics:{
         default:"arcade",
         arcade:{
