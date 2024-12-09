@@ -93,7 +93,6 @@ export class GameMap {
                 
                 // Always place floor first
                 if (tile !== 1) {
-                    //this.scene.add.image(posX, posY, 'floor');
                     const floorTile = this.scene.add.image(posX, posY, 'floor');
                     this.floorTiles.add(floorTile);
                 }
@@ -101,11 +100,13 @@ export class GameMap {
                 switch(tile) {
                     case 1: // Wall
                         this.walls.create(posX, posY, 'wall')
-                            .setImmovable(true);
+                            .setImmovable(true)
+                            .setDepth(-1);
                         break;
                     case 2: // Collectible //const fire = ?
                         const fire = this.collectibles.create(posX, posY, 'fire')
-                            .setScale(0.5);
+                            .setScale(0.5)
+                            .setDepth(0);
                         fire.setData('gridX', x); // Store grid position
                         fire.setData('gridY', y);
                         this.totalCollectibles++;
@@ -115,7 +116,7 @@ export class GameMap {
                         // this.totalCollectibles++;
                         // break;
                     case 3: // Exit
-                        this.exitTile = this.scene.add.image(posX, posY, 'exit');
+                        this.exitTile = this.scene.add.image(posX, posY, 'exit').setDepth(0);
                         this.exitPos = { x: x, y: y };
                         break;
                 }

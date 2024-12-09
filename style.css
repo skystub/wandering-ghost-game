@@ -22,7 +22,19 @@
     min-height:100vh;
   }
 
-  header,footer{
+  header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px 80px;
+  }
+
+  #timerDisplay, #scoreDisplay {
+    font-size: 25px;
+    color: var(--liClr);
+}
+
+  footer{
     display: flex;
     justify-content: center;
     align-items: center;

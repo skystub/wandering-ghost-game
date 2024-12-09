@@ -3,9 +3,9 @@ import Phaser from 'phaser'
 import {GameMap} from './map.js'
 import { Player } from './player.js';
 
-const TILE_SIZE = 16;  // Your tile size
-const GRID_WIDTH = 69; // Desired width in tiles
-const GRID_HEIGHT = 34; // Desired height in tiles
+const TILE_SIZE = 16; 
+const GRID_WIDTH = 69; 
+const GRID_HEIGHT = 34;
 
 const sizes = {
     width: GRID_WIDTH * TILE_SIZE,  // 69 * 16 = 1104 pixels
@@ -35,7 +35,6 @@ class GameScene extends Phaser.Scene{
         this.bgMusic;
         this.emitter;
         this.gameMap;
-        //this.collectibles;
     }
 
     preload(){
@@ -55,7 +54,7 @@ class GameScene extends Phaser.Scene{
         //this.bgMusic.play();
         //this.bgMusic.stop();
 
-        this.add.image(0,0,"bg").setOrigin(0,0).setDepth(-1);
+        this.add.image(0,0,"bg").setOrigin(0,0).setDepth(-2);
 
         this.player = new Player(this, 0, sizes.height - 100);
 
@@ -78,17 +77,22 @@ class GameScene extends Phaser.Scene{
 
         this.cursor = this.input.keyboard.createCursorKeys();
 
-        this.textScore = this.add.text(sizes.width - 120, 10, "Score:0",{
-            font: "25px Arial",
-            fill: "#000000",
-        });
+        // this.textScore = this.add.text(sizes.width - 120, 10, "Score:0",{
+        //     font: "25px Arial",
+        //     fill: "#000000",
+        // });
 
-        this.textTime = this.add.text(10, 10, "Remaining Time: 00",{
-            font: "25px Arial",
-            fill: "#000000",
-        });
+        // this.textTime = this.add.text(10, 10, "Remaining Time: 00",{
+        //     font: "25px Arial",
+        //     fill: "#000000",
+        // });
 
-        this.timedEvent = this.time.delayedCall(50000, this.gameOver,[], this);
+        this.scoreDisplay = document.getElementById('scoreDisplay');
+        this.timerDisplay = document.getElementById('timerDisplay');
+
+        // Initialize the timer event
+        this.timedEvent = this.time.delayedCall(120000, this.gameOver, [], this);
+
 
         this.emitter=this.add.particles(0,0,"money",{
             speed: 100,
@@ -98,11 +102,48 @@ class GameScene extends Phaser.Scene{
             emitting:false
         })
         this.emitter.startFollow(this.player.sprite, this.player.sprite.width/2, this.player.sprite.height/2, true);
+
+        // // Create the dark overlay
+        // const darkness = this.add.graphics();
+        // darkness.fillStyle(0x000000, 0.95); // Black with 0.8 opacity
+        // darkness.fillRect(0, 0, sizes.width, sizes.height);
+        // darkness.setDepth(1); // Above the map but below UI
+
+        // // Create a mask that follows the player
+        // const spotlight = this.make.graphics({
+        //     add: false  // Don't add to display list
+        // });
+        
+        // // Function to update the spotlight position
+        // const updateSpotlight = () => {
+        //     spotlight.clear();
+        //     spotlight.fillStyle(0xffffff);
+        //     spotlight.fillCircle(
+        //         this.player.sprite.x, 
+        //         this.player.sprite.y, 
+        //         100  // Radius of visible area
+        //     );
+        // }
+
+        // // Initial spotlight
+        // updateSpotlight();
+
+        // // Create mask and apply to darkness
+        // const mask = spotlight.createGeometryMask();
+        // mask.invertAlpha = true;
+        // darkness.setMask(mask);
+
+        // // Store references for update
+        // this.darkness = darkness;
+        // this.spotlight = spotlight;
+        // this.updateSpotlight = updateSpotlight;
     }
 
     update(){
         this.remainingTime = this.timedEvent.getRemainingSeconds();
-        this.textTime.setText(`Remaining Time: ${Math.round(this.remainingTime).toString()}`);
+        this.timerDisplay.textContent = `Remaining Time: ${Math.round(this.remainingTime)}`;
+
+        // this.textTime.setText(`Remaining Time: ${Math.round(this.remainingTime).toString()}`);
 
         this.player.update(this.cursor);
 
@@ -112,6 +153,7 @@ class GameScene extends Phaser.Scene{
             }
             // If player doesn't have enough fires, nothing happens
         }
+        this.updateSpotlight();
     }
 
     collectFire(player, fire) {
@@ -121,7 +163,8 @@ class GameScene extends Phaser.Scene{
             
             // Update score
             this.fires++;
-            this.textScore.setText(`Score: ${this.fires}`);
+            //this.textScore.setText(`Score: ${this.fires}`);
+            this.scoreDisplay.textContent = `Score: ${this.fires}`;
 
             // Destroy the fire sprite
             fire.destroy();
