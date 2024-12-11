@@ -100,6 +100,63 @@
     color: var(--liClr);
     cursor:pointer;
   }
+  .pause-button {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 10px;
+    font-size: 20px;
+    cursor: pointer;
+    background: #333;
+    border: none;
+    color: white;
+    border-radius: 5px;
+    z-index: 100;
+  }
+  
+  .pause-menu {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.8);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+  }
+  
+  .pause-menu.hidden {
+    display: none;
+  }
+  
+  .pause-content {
+    background: #333;
+    padding: 30px;
+    border-radius: 10px;
+    text-align: center;
+  }
+  
+  .pause-content h2 {
+    color: white;
+    margin-bottom: 20px;
+  }
+  
+  .pause-content button {
+    margin: 10px;
+    padding: 10px 20px;
+    font-size: 16px;
+    cursor: pointer;
+    background: #666;
+    border: none;
+    color: white;
+    border-radius: 5px;
+  }
+  
+  .pause-content button:hover {
+    background: #777;
+  }
 
 
 }
