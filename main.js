@@ -35,8 +35,25 @@ class GameScene extends Phaser.Scene{
         this.bgMusic;
         this.emitter;
         this.gameMap;
+        this.isPaused = false;
+        this.pauseMenu = document.getElementById('pauseMenu');
+        this.pauseButton = document.getElementById('pauseButton');
+        this.resumeBtn = document.getElementById('resumeBtn');
+        this.restartBtn = document.getElementById('restartBtn');
     }
-
+    
+    togglePause() {
+        this.isPaused = !this.isPaused;
+        if (this.isPaused) {
+            this.scene.pause();
+            this.timedEvent.paused = true;
+            this.pauseMenu.classList.remove('hidden');
+        } else {
+            this.scene.resume();
+            this.timedEvent.paused = false;
+            this.pauseMenu.classList.add('hidden');
+        }
+    }
     preload(){
         this.load.image('bg','/assets/bg.png');
         this.load.image('basket','/assets/basket.png');
@@ -137,23 +154,40 @@ class GameScene extends Phaser.Scene{
         this.darkness = darkness;
         this.spotlight = spotlight;
         this.updateSpotlight = updateSpotlight;
-    }
+
+        // Add ESC key handler
+        // Add ESC key handler
+        this.escKey = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ESC);
+        this.escKey.on('down', () => {
+            this.togglePause();
+        });
+
+        // Add click handlers for pause menu
+        this.pauseButton.addEventListener('click', () => {
+            this.togglePause();
+        });
+
+        this.resumeBtn.addEventListener('click', () => {
+            this.togglePause();
+        });
+
+        this.restartBtn.addEventListener('click', () => {
+            window.location.reload(); // This will reload the entire page
+        });
+            }
 
     update(){
-        this.remainingTime = this.timedEvent.getRemainingSeconds();
-        this.timerDisplay.textContent = `Remaining Time: ${Math.round(this.remainingTime)}`;
-
-        // this.textTime.setText(`Remaining Time: ${Math.round(this.remainingTime).toString()}`);
-
-        this.player.update(this.cursor);
-
-        if (this.gameMap.isAtExit(this.player)) {
-            if (this.fires >= 40) {  // You can adjust this number as needed
-                this.gameOver(true);  // Player wins
+        if (!this.isPaused) {
+            this.remainingTime = this.timedEvent.getRemainingSeconds();
+            this.timerDisplay.textContent = `Remaining Time: ${Math.round(this.remainingTime)}`;
+            this.player.update(this.cursor);
+            if (this.gameMap.isAtExit(this.player)) {
+                if (this.fires >= 40) {
+                    this.gameOver(true);
+                }
             }
-            // If player doesn't have enough fires, nothing happens
+            this.updateSpotlight();
         }
-        this.updateSpotlight();
     }
 
     collectFire(player, fire) {
