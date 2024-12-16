@@ -116,7 +116,7 @@ export class GameMap {
                         // this.totalCollectibles++;
                         // break;
                     case 3: // Exit
-                        this.exitTile = this.scene.add.image(posX, posY, 'exit').setDepth(0);
+                        this.exitTile = this.scene.add.image(posX, posY, 'exit').setDepth(3);
                         this.exitPos = { x: x, y: y };
                         break;
                 }

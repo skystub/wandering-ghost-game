@@ -58,6 +58,7 @@ class GameScene extends Phaser.Scene{
         this.load.image('bg','/assets/bg.png');
         this.load.image('basket','/assets/basket.png');
         this.load.image("apple","/assets/apple.png");
+        this.load.image("money","/assets/money.png");
         this.load.audio("coin", "/assets/coin.mp3");
         this.load.audio("bgMusic", "/assets/bgMusic.mp3");
 
@@ -114,7 +115,7 @@ class GameScene extends Phaser.Scene{
         this.emitter=this.add.particles(0,0,"money",{
             speed: 100,
             gravityY:speedDown-200,
-            scale: 0.4,
+            scale: 0.02,
             duration:100,
             emitting:false
         })
@@ -122,7 +123,7 @@ class GameScene extends Phaser.Scene{
 
         // Create the dark overlay
         const darkness = this.add.graphics();
-        darkness.fillStyle(0x000000, 0.95); // Black with 0.8 opacity
+        darkness.fillStyle(0x000000, 1); // Black with 0.8 opacity
         darkness.fillRect(0, 0, sizes.width, sizes.height);
         darkness.setDepth(1); // Above the map but below UI
 
@@ -138,7 +139,7 @@ class GameScene extends Phaser.Scene{
             spotlight.fillCircle(
                 this.player.sprite.x, 
                 this.player.sprite.y, 
-                100  // Radius of visible area
+                80  // Radius of visible area
             );
         }
 
@@ -236,7 +237,7 @@ const config = {
         default:"arcade",
         arcade:{
             gravity:{y:0},
-            debug:true
+            debug:false
         }
     },
     scene:[GameScene]

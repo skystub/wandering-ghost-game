@@ -18,22 +18,21 @@
   <body>
     <header>
       <div id="timerDisplay">Remaining Time: 00</div>
-      <p>Hello</p>
       <div id="scoreDisplay">Score: 0</div>
     </header>
     <main>
       <canvas id="gameCanvas"></canvas>
       <div id="gameStartDiv" class="gameUI">
         <h1>Game</h1>
-        <p>Collect the red squares and reach the exit in time.</p>
-        <p>If you catch less than 40 squares you lose.</p>
-        <p>Click the start button to begin</p>
+        <p>Collect the red squares and reach the exit (purple square) in time.</p>
+        <p>The more squares you collect, the higher your score.</p>
+        <p>Click the start button to begin, use the arrow keys to move.</p>
         <button id="gameStartBtn"><p>start</p></button>
       </div>
       <div id="gameEndDiv" class="gameUI">
         <p>Game Over</p>
         <h1>You <span id="gameWinLoseSpan"></span></h1>
-        <h1>Final Score: <span id="gameEndScoreSpan"></span></h1>
+        <h1>Final Score: <span id="gameEndScoreSpan"></span> / 115 </h1>
         <p>Refresh the Page to play again</p>
       </div>
     </main>
