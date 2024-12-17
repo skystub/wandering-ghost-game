@@ -4,9 +4,9 @@
 ## Players are trapped in a maze; their field of view is limited, and they must find their way through the maze to the exit before their time runs out. The goal is to collect as many points as possible (red squares) while traversing the maze, and the more squares the player collects, the higher the ending score.
 
 # Gifs
-![Start of Game](./gamestart.gif)
+![Start of Game](./gamestart1.gif)
 
-![End of Game](./gamefinish.gif)
+![End of Game](./gamefinish1.gif)
 
 
 # Technical Specification
