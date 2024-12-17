@@ -1,14 +1,21 @@
 # wandering-ghost-game
+
+# Overview
+## Players are trapped in a maze; their field of view is limited, and they must find their way through the maze to the exit before their time runs out. The goal is to collect as many points as possible (red squares) while traversing the maze, and the more squares the player collects, the higher the ending score.
+
+# Gifs
+![Start of Game](./gamestart.gif)
+
+![End of Game](./gamefinish.gif)
+
+
 # Technical Specification
-## 2. Architecture
+## 1. Architecture
 ### Key Components
 1. **Main**: Manages game state, level progression, score, and gameplay loop.
 2. **Map**: Manages room generation, entrances, exits, and secret rooms based on preset layouts.
 3. **Player**: Represents the player’s ghost with movement and interaction capabilities.
 
-(not yet implemented)
-4. **Mob**: Represents enemy creatures with movement and collision detection.
-7. **Leaderboard**: Manages high scores and player progression.
 
 ### 1. GameScene Class (main.js)
 Main game scene handling core game logic and state.
